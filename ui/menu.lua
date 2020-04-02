@@ -20,14 +20,14 @@ function menu:draw()
         love.graphics.print(rooms[rooms.current].name, 140, 168)
 
         if self.selected then --continue selected
-            love.graphics.print({{255,255,0},"Continue"}, 170,228)
+            love.graphics.print({{1,1,0},"Continue"}, 170,228)
             love.graphics.print("Reset",                  350,228)
         else --reset selected
             love.graphics.print("Continue",               170,228)
-            love.graphics.print({{255,255,0},  "Reset"},  350,228)
+            love.graphics.print({{1,1,0},  "Reset"},  350,228)
         end
-        --Print 'LV1' and 'sans'
-        love.graphics.print("LV1", 280, 128)
+        --Print L.O.VE and 'sans'
+        love.graphics.print("LV"..tostring(sans.lv), 280, 128)
         love.graphics.setFont(dialog.fonts.sans)
         love.graphics.print("sans", 140, 128)
 
@@ -35,11 +35,11 @@ function menu:draw()
         love.graphics.print("Are you sure you want to reset?", 80, 158)
 
         if self.resetsel then --no selected
-            love.graphics.print({{255,255,0},"NOO!!"}, 170,228)
+            love.graphics.print({{1,1,0},"NOO!!"}, 170,228)
             love.graphics.print("Yes",                 380,228)
         else --yes selected
             love.graphics.print("NOO!!",               170,228)
-            love.graphics.print({{255,255,0},"Yes"},   380,228)
+            love.graphics.print({{1,1,0},"Yes"},   380,228)
         end
     end
 end

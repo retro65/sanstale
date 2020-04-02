@@ -63,12 +63,17 @@ function dialog:say(face, facenum, text, font, voice)
     local function draw() --drawing function
         camera:set()
         love.draw(false) --draw everyting without updating cameras
-        love.graphics.draw(self.box, camera:getX()+30, camera:getY()+10) --draw dialog box
+        local coords = {x = camera:getX()+30, y = camera:getY()+10}
+        if sans.y-camera:getY()+sans.height/2 <= height/2 then
+            coords.y = camera:getY()+height-self.box:getHeight()-10
+        end
+        love.graphics.draw(self.box, coords.x, coords.y) --draw dialog box
         if face ~= 'def' then --draw face
-            love.graphics.draw(self.faces[face][facenum], camera:getX()+40, camera:getY()+20)
+            love.graphics.draw(self.faces[face][facenum], coords.x+10, coords.y+10)
         end
         love.graphics.setFont(font)
-        love.graphics.print({{255,255,255}, asterisk..text:sub(1, text_pointer)}, camera:getX()+40+self.faces[face][facenum]:getWidth(), camera:getY()+28) --print text
+        love.graphics.print({{1,1,1}, asterisk..text:sub(1, text_pointer)},
+            coords.x+10+self.faces[face][facenum]:getWidth(), coords.y+18) --print text
         love.graphics.present() --tell love to draw everything (you have to do this if you want to draw outside love.draw)
         camera:unset()
     end
@@ -86,17 +91,17 @@ function dialog:say(face, facenum, text, font, voice)
         love.event.pump()
         for ev, a, b, c in love.event.poll() do --poll events
             if ev == "quit" then
-            	love.event.quit()
-	        elseif ev == "keypressed" then
+                love.event.quit()
+	    elseif ev == "keypressed" then
                 if CANCEL[a] then --skip text
                     text_pointer = #text
                 elseif CONFIRM[a] and text_pointer >= #text then --if reached end of text then exit lel
                     loop = false
                 end
-		    end
-		end
+            end
+        end
  
-		draw() --draw shit
+        draw() --draw shit
         
         if rooms[rooms.current].update then --update room
             rooms[rooms.current]:update(dt)
@@ -105,7 +110,27 @@ function dialog:say(face, facenum, text, font, voice)
         if pointer_delay >= 0.05 then
             pointer_delay = 0
             if text_pointer < #text then
-                if self.voices[voice] then self.voices[voice]:play() end --voice sounds
+                --soundless symbols table
+                local silent = {
+                    [" "] = true,
+                    ["\n"] = true,
+                    [","] = true,
+                    ["."] = true,
+                    [":"] = true,
+                    [";"] = true,
+                    ["!"] = true,
+                    ["?"] = true,
+                    ["'"] = true,
+                    ["-"] = true,
+                    ["\""] = true,
+                    ["("] = true,
+                    [")"] = true
+                }
+                if silent[text:sub(text_pointer,text_pointer)] then
+                    self.voices[voice]:seek(0,"seconds")
+                else
+                    self.voices[voice]:play() --voice sounds
+                end
                 text_pointer = text_pointer+1
             end
         end

@@ -1,6 +1,6 @@
 function love.conf(t) --Config file
     t.identity = "sanstale"
-    t.version = "0.10.1"
+    t.version = "11.3"
 
     t.window.width = 640
     t.window.height = 480

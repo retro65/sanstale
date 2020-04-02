@@ -32,7 +32,7 @@ function love.errhand(msg)
 	local font = love.graphics.setNewFont(math.floor(love.window.toPixels(14)))
  
 	love.graphics.setBackgroundColor(0, 0, 0)
-	love.graphics.setColor(255, 255, 255, 255)
+	love.graphics.setColor(1, 1, 1, 1)
  
 	local trace = debug.traceback()
  

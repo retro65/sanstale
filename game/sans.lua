@@ -28,8 +28,17 @@ sans.anim = { --table that holds sans' animations
     walkdown  = anim8.newAnimation(sans.grid('1-4',1), sans.speed/1000*1.5),
     walkleft  = anim8.newAnimation(sans.grid('1-4',2), sans.speed/1000*1.5),
     walkright = anim8.newAnimation(sans.grid('1-4',3), sans.speed/1000*1.5),
-    walkup    = anim8.newAnimation(sans.grid('1-4',4), sans.speed/1000*1.5)
+    walkup    = anim8.newAnimation(sans.grid('1-4',4), sans.speed/1000*1.5),
+    --dunno how to name this:
+    joke      = anim8.newAnimation(sans.grid('1-2',5), sans.speed/1000*1.5),
+    winkshrug = anim8.newAnimation(sans.grid('1-2',6), sans.speed/1000*1.5)
 }
+
+--stats
+sans.lv = 1
+sans.exp = 0
+sans.hp = 1
+sans.gold = 0
 
 function sans:draw() --Function for drawing sans
     self.anim[self.anim.current]:draw(self.sheet, self.x, self.y)
@@ -37,6 +46,7 @@ end
 function sans:update(dt) --Function for updating sans
     if sans.anim.paused then
         sans.anim[sans.anim.current]:pause()
+        sans.anim[sans.anim.current]:gotoFrame(1)
     else
         sans.anim[sans.anim.current]:resume()
     end
@@ -102,7 +112,6 @@ function sans:check() --check elements (overworld)
            
             if e.oncheck then
                 e.oncheck() --oncheck is a function obv
-                return
             end
             if type(e.text) == "table" then
                 --loop through the text if it's a table

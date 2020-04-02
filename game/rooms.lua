@@ -1,7 +1,9 @@
 local rooms = { --main room module
     opacity = 0, --room transition opacity thingie
     change_time = 0, --room transition timer counter
-    opacity_increaser = 1 -- +1 or -1, if it darkens or it gets brigther
+    op_inc_val = 2, --opacity change speed
+    opacity_increaser = 2
+-- +op_inc_val or -op_inc_val, if it darkens or it gets brigther
 }
 
 function rooms:load(room) --load function
@@ -22,10 +24,10 @@ end
 function rooms:opupdate(dt) --update opacity transition thingie
     if self.changing then
         self.change_time = self.change_time + dt --update timer
-        self.opacity = self.opacity+600*dt*self.opacity_increaser --update opacity
+        self.opacity = self.opacity+dt*self.opacity_increaser --update opacity
 
-        if self.change_time >= 0.5 and self.opacity_increaser == 1 then
-            self.opacity_increaser = -1
+        if self.change_time >= 0.5 and self.opacity_increaser == self.op_inc_val then
+            self.opacity_increaser = -self.op_inc_val
             if self[self.nextroom].noscrollx then --set camera to new room's startx and starty
                 camera:setX(self[self.nextroom].start_x)
             end
@@ -40,7 +42,7 @@ function rooms:opupdate(dt) --update opacity transition thingie
             self.current = self.nextroom
 
         elseif self.change_time >= 1 then --done
-            self.opacity_increaser = 1
+            self.opacity_increaser = self.op_inc_val
             self.opacity = 0
             self.changing = false
         end
@@ -51,7 +53,7 @@ function rooms:opdraw() --draw opacity transition thingg
     if self.changing then
         love.graphics.setColor(0,0,0, self.opacity)
         love.graphics.rectangle("fill", camera:getX(), camera:getY(), width, height)
-        love.graphics.setColor(255,255,255,255)
+        love.graphics.setColor(1,1,1,1)
     end
 end
 
@@ -87,6 +89,14 @@ local r_template = { --room template
             love.graphics.draw(self.img)
         end
     end,
+    fgdraw = function(self)
+        if not(self.fg_sheet or self.fg_img) then return end
+        if self.animation then
+            self.animation:draw(self.fg_sheet,0,0)
+        else
+            love.graphics.draw(self.fg_img)
+        end
+    end,
     update = function(self, dt)
         if self.animation then
             self.animation:update(dt)
@@ -98,6 +108,7 @@ function rooms:new(arg) --new room constructor
     local o = setmetatable({}, {__index=r_template})
     o.elements = {}
     o.sheet, o.img, o.animation, o.grid = nil,nil,nil,nil
+    o.fg_sheet, o.fg_img = nil,nil
     if arg then
         for k,v in pairs(arg) do
             o[k] = v

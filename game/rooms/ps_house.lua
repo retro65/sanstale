@@ -17,13 +17,31 @@ pshr:element(44, 10, 60, 92, { "The labels on the door read:",
 {font = "papyrus", voice = "papyrus", text = "papyrus allowed."}})
 
 --bone frame
-pshr:element(252, 14, 94, 96, {"This image reminds you of\nwhat's important in life."}, true)
+pshr:element(252, 14, 94, 96, {"This image reminds you of\nwhat's important in life.",
+{face = "sans", facenum = 4, text = "such as..."},
+{face = "sans", facenum = 3, text = "...sleeping."},
+{face = "sans", facenum = 0, text = "and knowing how to\nopen the door to my\nroom."},
+{face = "sans", facenum = 6, text = "...to sleep."}}, true)
+--that's a hint on how to go back to sans' room
 
 --door to sans' room
 pshr:element(460, 98, 60, 13, nil, true, nil, function() rooms:change("sans", 90, 330) end)
 
---sofa
-pshr:element(172, 348, 160, 74, "(It's a sofa.)")
+--couch
+pshr:element(172, 348, 160, 74, nil, nil, nil,
+function()
+    if not events.couch then
+        dialog:say(nil,nil,"(You touch the couch.)")
+        dialog:say(nil,nil,"(It makes a jangling sound.)")
+        dialog:say(nil,nil,
+            "(You find a bunch of loose coins\ninside the couch...)")
+        sans.gold=sans.gold+20
+        events.couch=true
+        dialog:say(nil,nil,"(You got 20G.)")
+    else
+        dialog:say(nil,nil,"(It's a saggy old couch.)")
+    end
+end)
 
 --book
 pshr:element(32, 356, 50, 50, {"(It's a joke book.)",
@@ -48,7 +66,7 @@ pshr:element(374, 250, 118, 11, nil, nil, {new = "ps_kitchen", newx = 400, newy 
 pshr:element(496, 284, 74, 136, "(There's some spaghetti here.)\n(It doesn't look very tasty.)")
 
 --door to snowdin
-pshr:element(412, 467, 80, 7, nil, nil, {new = "snowtown", newx = 4675, newy = 282})
+pshr:element(412, 467, 80, 7, nil, nil, {new = "snowtown", newx = 4690, newy = 250})
 
 --middle wall thing 1 (left to kitchen)
 pshr:element(136, 162, 241, 102)
@@ -69,7 +87,7 @@ pshr:element(0, 264, 12, 160)
 --bottom left  wall
 pshr:element(12, 420, 400, 40)
 --right wall
-pshr:element(572, 274, 39, 160)
+pshr:element(572, 265, 39, 169)
 --bottom left wall
 pshr:element(492, 424, 92, 40)
 
