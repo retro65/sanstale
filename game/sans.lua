@@ -20,6 +20,9 @@ sans.hitbox  = { --sans bounding box (his feet)
     width = 46,
     height = 9
 }
+--create a frame just for shrugging
+local shrugt = {love.graphics.newQuad(
+    50,312, 62,60, sans.sheet:getWidth(),sans.sheet:getHeight())}
 
 sans.anim = { --table that holds sans' animations
     current = 'walkdown',
@@ -29,9 +32,9 @@ sans.anim = { --table that holds sans' animations
     walkleft  = anim8.newAnimation(sans.grid('1-4',2), sans.speed/1000*1.5),
     walkright = anim8.newAnimation(sans.grid('1-4',3), sans.speed/1000*1.5),
     walkup    = anim8.newAnimation(sans.grid('1-4',4), sans.speed/1000*1.5),
-    --dunno how to name this:
-    joke      = anim8.newAnimation(sans.grid('1-2',5), sans.speed/1000*1.5),
-    winkshrug = anim8.newAnimation(sans.grid('1-2',6), sans.speed/1000*1.5)
+    laugh     = anim8.newAnimation(sans.grid('1-2',5), sans.speed/1000*1.5),
+    wink      = anim8.newAnimation(sans.grid('1-1',6), 100),
+    shrug     = anim8.newAnimation(shrugt, 100)
 }
 
 --stats
@@ -41,7 +44,11 @@ sans.hp = 1
 sans.gold = 0
 
 function sans:draw() --Function for drawing sans
-    self.anim[self.anim.current]:draw(self.sheet, self.x, self.y)
+    local xo = 0
+    if self.anim.current == 'shrug' then
+        xo = -8
+    end
+    self.anim[self.anim.current]:draw(self.sheet, self.x+xo, self.y)
 end
 function sans:update(dt) --Function for updating sans
     if sans.anim.paused then
@@ -100,6 +107,8 @@ function sans:move(dt)
         --if sans hasn't collided with anything and super speed mode is not on, then change coordinates to new ones
         self.x = newx
         self.y = newy
+    else
+        self.anim.paused = true
     end
 end
 

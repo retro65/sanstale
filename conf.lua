@@ -6,6 +6,7 @@ function love.conf(t) --Config file
     t.window.height = 480
     t.window.resizable = false
     t.window.title = "sanstale"
+    t.window.icon = "icon.png"
     
     t.modules.joystick = false
     t.modules.physics = false

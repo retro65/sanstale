@@ -3,8 +3,8 @@ local sansr = rooms:new{
     noscrolly = true,
     music = "sans",
     name = "Snowdin-Sans'room",
-    sheet = love.graphics.newImage("res/img/sansroom.png") --load spritesheet
-    
+    sheet = love.graphics.newImage("res/img/sansroom.png"), --load spritesheet
+    fg_sheet = love.graphics.newImage("res/img/sansroom_fg.png")
 }
 
 sansr.grid = anim8.newGrid(336,398, sansr.sheet:getWidth(),sansr.sheet:getHeight()) --load grid
