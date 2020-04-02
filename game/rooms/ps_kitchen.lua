@@ -12,17 +12,18 @@ psk.start_y = psk.img:getHeight()/2-height/2
 
 --oven
 psk:element(337, 191, 41, 58, {"(It's an oven.)",
-{face="sans", facenum=1, text="papyrus always cooks his\nspaghetti here."}})
+{face="sans", facenum=1, text="papyrus always cooks his spaghetti here."}})
 
 --table
 psk:element(340, 107, 38, 84, {"(It's a table.)",
-{face="sans", facenum=1, text="papyrus always eats his\nspaghetti here."}})
+{face="sans", facenum=1, text="papyrus always eats his spaghetti here."}})
 
 --closet
 psk:element(384, 7, 66, 130, "(It's a closet.)\n(It's filled with bones.)")
 
 --fridge
-psk:element(466, 27, 67, 108, "(It's a fridge.)\n(It's filled with spaghetti,\ntomato sauce and ketchup.)")
+psk:element(466, 27, 67, 108,
+"(It's a fridge.)\n(It's filled with spaghetti, tomato sauce and ketchup.)")
 
 --right wall
 psk:element(532, 132, 25, 123)
@@ -32,7 +33,8 @@ psk:element(492, 255, 40, 7)
 psk:element(333, 255, 40, 7)
 
 --trash can
-psk:element(496, 207, 34, 40, "(It's a trash can.)\n(There are some crumbled up\npapers at the bottom.)")
+psk:element(496, 207, 34, 40,
+"(It's a trash can.)\n(There are some crumpled up papers at the bottom.)")
 
 --exit
 psk:element(374, 260, 118, 11, nil, nil, {new = "ps_house", newx = 400, newy = 220})

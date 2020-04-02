@@ -10,18 +10,23 @@ local st = rooms:new{
 --START ELEMENTS
 
 --skelebros' house
-st:element(4675, 282, 80, 7, nil, nil, {new = "ps_house", newx = 427, newy = 400})
-st:element(4520, 214, 330, 64) --the gap to the forest is for entrance to Sans' secret lab
+st:element(4675, 282, 80, 7, nil, nil,
+{new = "ps_house", newx = 427, newy = 400})
+st:element(4520, 214, 330, 64)
+---the gap to the forest is for entrance to Sans' secret lab
 --shortcut tunnel, east end
 st:element(4864, 0, 100, 266)
-st:element(4889, 266, 50, 5, nil, nil, {new = "snowtown", newx = 1684, newy = 194})
+st:element(4889, 266, 50, 5, nil, nil,
+{new = "snowtown", newx = 1684, newy = 194})
 --shortcut tunnel, west end
 st:element(1657, 190, 100, 50)
-st:element(1682, 240, 50, 5, nil, nil, {new = "snowtown", newx = 4891, newy = 220})
+st:element(1682, 240, 50, 5, nil, nil,
+{new = "snowtown", newx = 4891, newy = 220})
 st:element(1769, 198, 41, 40, {
-"(Don't want to walk to the\nother side of town?)",
+"(Don't want to walk to the other side of town?)",
 "(Try the undersnow tunnels!)\n(They're efficiently laid out.)",
-{face = "sans", facenum = 0, text = "maybe it's best to use this\nbefore the shortcut update\ncomes up."}
+{face = "sans", facenum = 0, text =
+    "maybe it's best to use this before the shortcut update comes up."}
 }) --the sign
 --papyrus' capture zone (as sans calls it, the garage... doghouse shed...)
 st:element(4987, 0, 200, 255, {
@@ -33,9 +38,10 @@ st:element(4987, 0, 200, 255, {
 {face = "sans", facenum = 6, text = "-ish."}
 })
 --mailbox1
-st:element(4406, 217, 22, 54, "(It's a mailbox overflowing\nwith unread junk mail.)")
+st:element(4406, 217, 22, 54,
+"(It's a mailbox overflowing with unread junk mail.)")
 --mailbox2
-st:element(4446, 217, 22, 53, "(This mailbox is labelled\n\"PAPYRUS\".)")
+st:element(4446, 217, 22, 53, "(This mailbox is labelled \"PAPYRUS\".)")
 --librarBy
 st:element(3777, 0, 488, 204, {
 {face = "sans", facenum = 0, text = "welp, here's the librarby."}
@@ -63,7 +69,7 @@ st:element(2538, 0, 412, 217, {
 })
 st:element(2756, 0, 53, 234) --the pot
 --christmas tree
-st:element(2257, 238, 121, 85, "(It's a carefully decorated\ntree.)")
+st:element(2257, 238, 121, 85, "(It's a carefully decorated tree.)")
 --south forest
 st:element(0, 361, 5500, 100)
 st:element(178, 320, 336, 20)

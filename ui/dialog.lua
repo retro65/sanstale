@@ -58,24 +58,34 @@ function dialog:say(face, facenum, text, font, voice)
         font = self.fonts[font]
     end
 
-    if asterisk == "* " then text = text:gsub("\n","\n  ") end
+    local wrwidth,wrt = font:getWrap(text,
+        556-self.faces[face][facenum]:getWidth()-font:getWidth(asterisk))
 
     local function draw() --drawing function
-        camera:set()
-        love.draw(false) --draw everyting without updating cameras
-        local coords = {x = camera:getX()+30, y = camera:getY()+10}
+        local x,y = camera:getX()+30, camera:getY()+10
         if sans.y-camera:getY()+sans.height/2 <= height/2 then
-            coords.y = camera:getY()+height-self.box:getHeight()-10
+            y = camera:getY()+height-self.box:getHeight()-10
         end
-        love.graphics.draw(self.box, coords.x, coords.y) --draw dialog box
+        love.graphics.draw(self.box, x, y) --draw dialog box
         if face ~= 'def' then --draw face
-            love.graphics.draw(self.faces[face][facenum], coords.x+10, coords.y+10)
+            love.graphics.draw(self.faces[face][facenum], x+10, y+10)
         end
         love.graphics.setFont(font)
-        love.graphics.print({{1,1,1}, asterisk..text:sub(1, text_pointer)},
-            coords.x+10+self.faces[face][facenum]:getWidth(), coords.y+18) --print text
-        love.graphics.present() --tell love to draw everything (you have to do this if you want to draw outside love.draw)
-        camera:unset()
+        love.graphics.print({{1,1,1}, asterisk},
+            x+10+self.faces[face][facenum]:getWidth(), y+18)
+        local cc = 0 --count characters already went over
+        x = x+10+self.faces[face][facenum]:getWidth()+font:getWidth(asterisk)
+        for i = 1, #wrt do
+            if cc+#(wrt[i]) <= text_pointer then
+                love.graphics.print({{1,1,1}, wrt[i]},
+                    x, y+18+font:getHeight()*(i-1))
+            else
+                love.graphics.print({{1,1,1}, wrt[i]:sub(1,text_pointer-cc)},
+                    x, y+18+font:getHeight()*(i-1))
+                break
+            end
+            cc = cc+#(wrt[i])
+        end
     end
     
     sans.canmove = 0 --avoid sans `teleporting` when exiting this function because dt will increase like mad
@@ -100,9 +110,13 @@ function dialog:say(face, facenum, text, font, voice)
                 end
             end
         end
- 
+
+        camera:set()
+        love.draw(false) --draw everyting without updating cameras
         draw() --draw shit
-        
+        love.graphics.present() --draw outside love.draw
+        camera:unset()
+
         if rooms[rooms.current].update then --update room
             rooms[rooms.current]:update(dt)
         end

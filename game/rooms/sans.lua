@@ -16,28 +16,31 @@ sansr.start_y = sansr.start_y/2-height/2
 --START ELEMENTS
 
 --treadmill (head and note + base)
-sansr:element(174, 170, 24, 54, {"(There is a note attached\nto the treadmill.)",
-"\"the truth is that you got\nowned, nerd......\"",
+local treadmill_msg = {
+"(There is a note attached to the treadmill.)",
+"\"the truth is that you got owned, nerd......\"",
 {face = "sans", facenum = 1, text = "hey, i wrote that note."}}
-)
-sansr:element(110, 196, 69, 28, {"(There is a note attached\nto the treadmill.)",
-"\"the truth is that you got\nowned, nerd......\"",
-{face = "sans", facenum = 1, text = "hey, i wrote that note."}})
+sansr:element(174, 170, 24, 54, treadmill_msg)
+sansr:element(110, 196, 69, 28, treadmill_msg)
 
 --table
-sansr:element(24, 82, 99, 62, "(Clothes and trombones are\nshoved in haphazardly.)")
+sansr:element(24, 82, 99, 62,
+"(Clothes and trombones are shoved in haphazardly.)")
 
 --trash tornado
-sansr:element(250, 173, 90, 130, "(It appears to be a self-\nsustaining tornado made of\ntrash.)")
+sansr:element(250, 173, 90, 130,
+"(It appears to be a self-sustaining tornado made of trash.)")
 
 --letter on top
-sansr:element(149, 109, 34, 20, "(It's a thank you letter.)\n(It's addressed to Santa.)", true)
+sansr:element(149, 109, 34, 20,
+"(It's a thank you letter.)\n(It's addressed to Santa.)", true)
 
 --pillow
 sansr:element(204, 93, 50, 40, "(It's an uncovered pillow.)", true)
     
 --Bed thing
-sansr:element(255, 88, 66, 101, "(It's a worn mattress.)\n(The sheets are bunched up in a\nweird, creasy ball.)")
+sansr:element(255, 88, 66, 101,
+"(It's a worn mattress.)\n(The sheets are bunched up in a weird, creasy ball.)")
 
 --Sock
 sansr:element(148, 272, 20, 16, "(It's a dirty sock.)", true)
@@ -56,7 +59,8 @@ sansr:element(148, 322, 186, 76)
 --Bottom left thingie
 sansr:element(0, 322, 68, 76)
 --exit
-sansr:element(68, 391, 80, 28, nil,nil, {new = 'ps_house', newx = 467, newy = 56})
+sansr:element(68, 391, 80, 28, nil,nil,
+{new = 'ps_house', newx = 467, newy = 56})
 
 --END ELEMENTS
 
