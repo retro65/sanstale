@@ -4,7 +4,7 @@ local prompt = {
 
 --'opt' is a sequence of SEQUENCES with at least the elements "{X, Y}"
 ---should have at least 1 element
-function prompt:choice(opt, drawfunc, nocancel, mute)
+function prompt:choice(opt, obj, nocancel, mute, menucancel)
     sans.canmove = 0 --dt will build up madly, freeze sans until after return
 
     local dt
@@ -24,6 +24,8 @@ function prompt:choice(opt, drawfunc, nocancel, mute)
                     loop = false
                 elseif not nocancel and CANCEL[a] then --cancel out
                     return nil --return nil if player cancels out
+                elseif menucancel and MENU[a] then --cancel out w/ MENU
+                    return false --return false if player cancels out
                 elseif PREV[a] then
                     res = (res-1) % #opt --wrap if OOB
                 elseif NEXT[a] then
@@ -34,10 +36,11 @@ function prompt:choice(opt, drawfunc, nocancel, mute)
 
         camera:set()
         love.draw(false)
-        if drawfunc then
-            drawfunc()
+        local rx,ry = 0,0
+        if obj then
+            rx,ry = obj:draw() --offset for SOUL coords
         end
-        souls.souls.sans:draw(opt[res+1][1], opt[res+1][2])
+        souls.souls.sans:draw(opt[res+1][1]+rx, opt[res+1][2]+ry)
         love.graphics.present()
         camera:unset()
 

@@ -17,7 +17,11 @@ local s_template = { --soul template
         self:switch("dmg")
         self.anim.dmg:resume()
     end,
-    draw = function(self, x,y)
+    draw = function(self, x,y, rel)
+        if rel then --location is on-screen if rel is true
+            x = x + camera:getX()
+            y = y + camera:getY()
+        end
         --'-2' is to compensate 2 blank columns for the 'brk' animation
         self.anim[self.anim.current]:draw(self.sheets[self.mode],x-2,y)
     end,
