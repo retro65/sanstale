@@ -10,6 +10,8 @@ sans   = require "game.sans"
 music  = require "game.music"
 rooms  = require "game.rooms"
 save   = require "save"
+souls  = require "game.souls"
+prompt = require "ui.prompt"
 igmenu = require "ui.igmenu"
 
 function collision(x1,y1,w1,h1, x2,y2,w2,h2) --simple function to detect collision between two rectangles
@@ -27,6 +29,8 @@ function love.load(arg)
     CONFIRM = {z=true, ["return"] = true} --constants
     CANCEL = {x=true,rshift=true}
     MENU = {c=true,rctrl=true}
+    NEXT = {down=true,right=true}
+    PREV = {up=true,left=true}
     width = lg.getWidth()
     height = lg.getHeight()
     --load modules
@@ -60,6 +64,9 @@ function love.update(dt)
         end
         rooms:opupdate(dt)
         rooms[rooms.current]:update(dt)
+    end
+    for _,e in pairs(souls.souls) do
+        e:update(dt)
     end
 end
 
@@ -129,7 +136,7 @@ function love.keypressed(k)
     
     elseif MENU[k] then
         if state == "overworld" then
-            igmenu.popup() --activate in-game menu when c/ctrl is pressed
+            igmenu:popup() --activate in-game menu when c/ctrl is pressed
         end
     
     elseif CONFIRM[k] then
@@ -163,12 +170,12 @@ function love.keypressed(k)
             end
         end
 
-    elseif k == "right" or k == "left" then --select continue or reset in menu
+    elseif NEXT[k] or PREV[k] then --select continue or reset in menu
         if state == "menu" then
             if not menu.resetti then --normal
-                menu.selected = k == "left"
+                menu.selected = PREV[k]
             else --reset confirmation screen
-                menu.resetsel = k == "left"
+                menu.resetsel = PREV[k]
             end
         end
     

@@ -1,7 +1,6 @@
 local igm = {
     stat_font = love.graphics.newFont("res/font/CryptOfTomorrow.ttf", 16),
-    stat_small = love.graphics.newImage("res/img/stat_small.png"),
-    select_snd = love.audio.newSource("res/aud/sfx/snd_select.wav", "static")
+    stat_small = love.graphics.newImage("res/img/stat_small.png")
 }
 
 function igm:popup()
@@ -10,14 +9,14 @@ function igm:popup()
         love.draw(false) --draw everyting without updating cameras
         local coords = {x = camera:getX()+30, y = camera:getY()+30}
         if sans.y-camera:getY()+sans.height/2 <= height/2 then
-            coords.y = camera:getY()+height-igm.stat_small:getHeight()-30
+            coords.y = camera:getY()+height-self.stat_small:getHeight()-30
         end
         --MAIN STATS
-        love.graphics.draw(igm.stat_small, coords.x, coords.y)
+        love.graphics.draw(self.stat_small, coords.x, coords.y)
         love.graphics.setColor(1,1,1,1)
         love.graphics.setFont(dialog.fonts.sans)
         love.graphics.print("sans", coords.x+14, coords.y+8)
-        love.graphics.setFont(igm.stat_font)
+        love.graphics.setFont(self.stat_font)
         love.graphics.print(tostring(sans.lv), coords.x+50, coords.y+48)
         love.graphics.print(tostring(sans.hp).."/1", coords.x+50, coords.y+66)
         love.graphics.print(tostring(sans.gold), coords.x+50, coords.y+84)
@@ -32,7 +31,7 @@ function igm:popup()
     local dt
     local loop = true
 
-    igm.select_snd:play()
+    prompt.select_snd:play()
 
     while loop do
         dt = love.timer.getDelta()
