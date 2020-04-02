@@ -1,6 +1,6 @@
 #Sanstale
-undertale fangame written in love2d.
+Undertale (by Toby Fox) fangame written in LÖVE2d.
 
-I'm not sure if I should continue this because I lost motivation, so I won't be writing any documentation soon.
+This is gonna be continued.
 
-Feel free to fork this or whatever
+Feel free to fork this
