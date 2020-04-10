@@ -3,6 +3,7 @@ local lg = love.graphics
 --require everything
 camera = require "lib.camera"
 anim8  = require "lib.anim8"
+         require "lib.slam"
          require "errhand"
 dialog = require "ui.dialog"
 menu   = require "ui.menu"

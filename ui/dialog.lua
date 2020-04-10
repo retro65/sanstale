@@ -140,9 +140,7 @@ function dialog:say(face, facenum, text, font, voice)
                     ["("] = true,
                     [")"] = true
                 }
-                if silent[text:sub(text_pointer,text_pointer)] then
-                    self.voices[voice]:seek(0,"seconds")
-                else
+                if not silent[text:sub(text_pointer,text_pointer)] then
                     self.voices[voice]:play() --voice sounds
                 end
                 text_pointer = text_pointer+1
