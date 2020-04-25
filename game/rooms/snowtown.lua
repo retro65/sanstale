@@ -33,6 +33,8 @@ st:element(4987, 0, 200, 255, {
 {face = "sans", facenum = 0, text = "this is our garage."},
 {face = "sans", facenum = 4, text = "doghouse..."},
 {face = "sans", facenum = 0, text = "shed..."},
+{face = "sans", facenum = 3, text = "garage-house."},
+{face = "sans", facenum = 6, text = "doghouse-shed."},
 {face = "sans", facenum = 2, text = "thingy..."},
 {face = "sans", facenum = 2, text = "..."},
 {face = "sans", facenum = 6, text = "-ish."}
@@ -62,7 +64,14 @@ st:element(1020, 0, 239, 243)
 st:element(1380, 0, 239, 243)
 st:element(1259, 0, 121, 222)
 --dimensional box
-st:element(1356, 250, 40, 40, "Use the box? (No)")
+st:element(1356, 250, 40, 40, nil,nil,nil,
+function()
+    if dialog:say(nil,nil,"Use the box?@@Yes@@@@No@@",nil,nil,2) == 1 then
+        dialog:say(nil,nil,
+            "Stay determined for an upcoming inventory update.")
+    end
+end
+)
 --grillby's
 st:element(2538, 0, 412, 217, {
 {face = "sans", facenum = 0, text = "so are you gonna go in or what?"}

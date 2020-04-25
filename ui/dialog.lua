@@ -1,4 +1,7 @@
-local dialog = {active = false} --namespace
+local dialog = {
+    choiceH = 100,
+    active = false
+} --namespace
 
 dialog.faces = { --table that holds all dialog box faces
     papyrus = {},
@@ -30,12 +33,25 @@ function dialog:load() --loading function
     end
 end
 
-function dialog:say(face, facenum, text, font, voice)
+function dialog:say(face, facenum, text, font, voice, opt)
     face = face or 'def' --def is default
     if face == 'def' then facenum = 1 end 
     local asterisk = "* "
 
     local text_pointer = 1
+    local just_say = not opt
+    if type(opt) == 'number' then
+        local opt2 = {}
+        for i = 1,opt do
+            table.insert(opt2,
+                {math.floor((i/(opt+1))*self.box:getWidth()),self.choiceH})
+            text = text:gsub("@@([%g ]-)@@",
+                function (s) opt2[i][3] = s return "" end, 1)
+        end
+        opt = opt2
+    elseif just_say then
+        opt = {{-9999,-9999}}
+    end
 
     if not font or not voice then
         if face == "papyrus" then --if face is papyrus then voice and font too and text is all uppercase
@@ -74,18 +90,26 @@ function dialog:say(face, facenum, text, font, voice)
         love.graphics.print({{1,1,1}, asterisk},
             x+10+self.faces[face][facenum]:getWidth(), y+18)
         local cc = 0 --count characters already went over
-        x = x+10+self.faces[face][facenum]:getWidth()+font:getWidth(asterisk)
+        local x2 = x+10+self.faces[face][facenum]:getWidth()+
+            font:getWidth(asterisk)
         for i = 1, #wrt do
             if cc+#(wrt[i]) <= text_pointer then
                 love.graphics.print({{1,1,1}, wrt[i]},
-                    x, y+18+font:getHeight()*(i-1))
+                    x2, y+18+font:getHeight()*(i-1))
             else
                 love.graphics.print({{1,1,1}, wrt[i]:sub(1,text_pointer-cc)},
-                    x, y+18+font:getHeight()*(i-1))
+                    x2, y+18+font:getHeight()*(i-1))
                 break
             end
             cc = cc+#(wrt[i])
         end
+        if not just_say and text_pointer >= #text then --display options
+            for i = 1, #opt do
+                love.graphics.print({{1,1,1}, opt[i][3]},
+                    x+opt[i][1]+18, y+self.choiceH-8)
+            end
+        end
+        return x,y
     end
     
     sans.canmove = 0 --avoid sans `teleporting` when exiting this function because dt will increase like mad
@@ -105,8 +129,6 @@ function dialog:say(face, facenum, text, font, voice)
 	    elseif ev == "keypressed" then
                 if CANCEL[a] then --skip text
                     text_pointer = #text
-                elseif CONFIRM[a] and text_pointer >= #text then --if reached end of text then exit lel
-                    loop = false
                 end
             end
         end
@@ -146,7 +168,11 @@ function dialog:say(face, facenum, text, font, voice)
                 text_pointer = text_pointer+1
             end
         end
+        if text_pointer >= #text then
+            loop = false
+        end
     end
+    return prompt:choice(opt, draw, true, just_say)
 end
 
 return dialog

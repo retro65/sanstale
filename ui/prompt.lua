@@ -37,8 +37,10 @@ function prompt:choice(opt, obj, nocancel, mute, menucancel)
         camera:set()
         love.draw(false)
         local rx,ry = 0,0
-        if obj then
+        if type(obj) == "table" then
             rx,ry = obj:draw() --offset for SOUL coords
+        elseif type(obj) == "function" then
+            rx,ry = obj() --offset for SOUL coords
         end
         souls.souls.sans:draw(opt[res+1][1]+rx, opt[res+1][2]+ry)
         love.graphics.present()
