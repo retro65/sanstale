@@ -1,4 +1,6 @@
 local souls = {
+    w = 16,
+    h = 16
 }
 
 local s_template = { --soul template
@@ -54,7 +56,14 @@ function souls:new(sheets, grid) --constructor
     return o
 end
 
+function souls:update(dt) --update all souls
+    for _,e in pairs(self.souls) do
+        e:update(dt)
+    end
+end
+
 local m_sheet = love.graphics.newImage("res/img/souls/m_soul.png")
+--the pixel dimensions are here bcs they are independent of the gameplay size
 local m_grid = anim8.newGrid(20,16,m_sheet:getDimensions())
 local m_sheets = {
     blu=love.graphics.newImage("res/img/souls/mb_soul.png"),

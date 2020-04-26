@@ -66,7 +66,7 @@ st:element(1259, 0, 121, 222)
 --dimensional box
 st:element(1356, 250, 40, 40, nil,nil,nil,
 function()
-    if dialog:say(nil,nil,"Use the box?@@Yes@@@@No@@",nil,nil,2) == 1 then
+    if dialog:say(nil,nil,"Use the box?@@Yes@@No@@",nil,nil,2) == 1 then
         dialog:say(nil,nil,
             "Stay determined for an upcoming inventory update.")
     end

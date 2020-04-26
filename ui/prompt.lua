@@ -49,9 +49,7 @@ function prompt:choice(opt, obj, nocancel, mute, menucancel)
         if rooms[rooms.current].update then --update room
             rooms[rooms.current]:update(dt)
         end
-        for _,e in pairs(souls.souls) do
-            e:update(dt)
-        end
+        souls:update(dt)
     end
     return res+1 --correct it for return value
 end

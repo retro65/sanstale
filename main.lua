@@ -66,9 +66,7 @@ function love.update(dt)
         rooms:opupdate(dt)
         rooms[rooms.current]:update(dt)
     end
-    for _,e in pairs(souls.souls) do
-        e:update(dt)
-    end
+    souls:update(dt)
 end
 
 function love.draw(cameras)

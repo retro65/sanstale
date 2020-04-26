@@ -1,5 +1,20 @@
 local dialog = {
     choiceH = 100,
+    silent = {
+        [" "] = true,
+        ["\n"] = true,
+        [","] = true,
+        ["."] = true,
+        [":"] = true,
+        [";"] = true,
+        ["!"] = true,
+        ["?"] = true,
+        ["'"] = true,
+        ["-"] = true,
+        ["\""] = true,
+        ["("] = true,
+        [")"] = true
+    },
     active = false
 } --namespace
 
@@ -38,15 +53,23 @@ function dialog:say(face, facenum, text, font, voice, opt)
     if face == 'def' then facenum = 1 end 
     local asterisk = "* "
 
-    local text_pointer = 1
+    local textp = 1
     local just_say = not opt
     if type(opt) == 'number' then
         local opt2 = {}
         for i = 1,opt do
             table.insert(opt2,
-                {math.floor((i/(opt+1))*self.box:getWidth()),self.choiceH})
+                {math.floor((i/(opt+1))*self.box:getWidth()-souls.w/2),self.choiceH})
             text = text:gsub("@@([%g ]-)@@",
-                function (s) opt2[i][3] = s return "" end, 1)
+                function (s)
+                    opt2[i][3] = s
+                    if i == opt then
+                        return ""
+                    else
+                        return "@@"
+                    end
+                end,
+                1)
         end
         opt = opt2
     elseif just_say then
@@ -93,20 +116,20 @@ function dialog:say(face, facenum, text, font, voice, opt)
         local x2 = x+10+self.faces[face][facenum]:getWidth()+
             font:getWidth(asterisk)
         for i = 1, #wrt do
-            if cc+#(wrt[i]) <= text_pointer then
+            if cc+#(wrt[i]) <= textp then
                 love.graphics.print({{1,1,1}, wrt[i]},
                     x2, y+18+font:getHeight()*(i-1))
             else
-                love.graphics.print({{1,1,1}, wrt[i]:sub(1,text_pointer-cc)},
+                love.graphics.print({{1,1,1}, wrt[i]:sub(1,textp-cc)},
                     x2, y+18+font:getHeight()*(i-1))
                 break
             end
             cc = cc+#(wrt[i])
         end
-        if not just_say and text_pointer >= #text then --display options
+        if not just_say and textp >= #text then --display options
             for i = 1, #opt do
                 love.graphics.print({{1,1,1}, opt[i][3]},
-                    x+opt[i][1]+18, y+self.choiceH-8)
+                    x+opt[i][1]+souls.w+2, y+self.choiceH-souls.h/2)
             end
         end
         return x,y
@@ -128,7 +151,7 @@ function dialog:say(face, facenum, text, font, voice, opt)
                 love.event.quit()
 	    elseif ev == "keypressed" then
                 if CANCEL[a] then --skip text
-                    text_pointer = #text
+                    textp = #text
                 end
             end
         end
@@ -145,30 +168,14 @@ function dialog:say(face, facenum, text, font, voice, opt)
 
         if pointer_delay >= 0.05 then
             pointer_delay = 0
-            if text_pointer < #text then
-                --soundless symbols table
-                local silent = {
-                    [" "] = true,
-                    ["\n"] = true,
-                    [","] = true,
-                    ["."] = true,
-                    [":"] = true,
-                    [";"] = true,
-                    ["!"] = true,
-                    ["?"] = true,
-                    ["'"] = true,
-                    ["-"] = true,
-                    ["\""] = true,
-                    ["("] = true,
-                    [")"] = true
-                }
-                if not silent[text:sub(text_pointer,text_pointer)] then
+            if textp < #text then
+                if not self.silent[text:sub(textp,textp)] then
                     self.voices[voice]:play() --voice sounds
                 end
-                text_pointer = text_pointer+1
+                textp = textp+1
             end
         end
-        if text_pointer >= #text then
+        if textp >= #text then
             loop = false
         end
     end
