@@ -92,19 +92,27 @@ function love.draw(cameras)
         rooms[rooms.current]:fgdraw() --draw room foreground
         rooms:opdraw() --draw room transition opacity thing
         if debug_elems then --semi-transparent room element vision (colored)
-            lg.setColor(1,1,1,0.5)
+            lg.setColor(1,1,1,0.4)
             lg.rectangle("fill",
                 sans.x+sans.hitbox.x,
                 sans.y+sans.hitbox.y,
                 sans.hitbox.width, sans.hitbox.height)
             for _,i in pairs(rooms[rooms.current].elements) do
-                if i.nocollision then
-                    lg.setColor(0,1,0,0.5)
-                elseif i.exit then
-                    lg.setColor(0,0,1,0.5)
-                else
-                    lg.setColor(1,0,0,0.5) --regular solid elements are red
+                local r = 0
+                local g = 0
+                local b = 0
+                if i.exit then
+                    r,g = 0.5,0.5 --dark-yellow for exits
                 end
+                if i.nocollision then
+                    g = 1
+                else
+                    r = 1
+                end
+                if i.text or i.oncheck then
+                    b = 1
+                end
+                lg.setColor(r,g,b,0.4)
                 lg.rectangle("fill", i.x, i.y, i.width, i.height)
             end
         end
