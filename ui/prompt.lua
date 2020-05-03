@@ -4,7 +4,12 @@ local prompt = {
 
 --'opt' is a sequence of SEQUENCES with at least the elements "{X, Y}"
 ---should have at least 1 element
-function prompt:choice(opt, obj, nocancel, mute, menucancel)
+--possible keys in flags (update if more are added):
+---abs: use absolute coords for the SOUL and the draw func
+---mute: no sound is played by prompt:choice
+---menuC: use MENU keys to cancel out
+---nocancel: disallow cancelling with CANCEL keys
+function prompt:choice(opt, obj, flags)
     sans.canmove = 0 --dt will build up madly, freeze sans until after return
 
     local dt
@@ -20,11 +25,11 @@ function prompt:choice(opt, obj, nocancel, mute, menucancel)
                 love.event.quit()
             elseif ev == "keypressed" then
                 if CONFIRM[a] then
-                    if not mute then self.select_snd:play() end
+                    if not flags.mute then self.select_snd:play() end
                     loop = false
-                elseif not nocancel and CANCEL[a] then --cancel out
+                elseif not flags.nocancel and CANCEL[a] then --cancel out
                     return nil --return nil if player cancels out
-                elseif menucancel and MENU[a] then --cancel out w/ MENU
+                elseif flags.menuC and MENU[a] then --cancel out w/ MENU
                     return false --return false if player cancels out
                 elseif PREV[a] then
                     res = (res-1) % #opt --wrap if OOB
@@ -34,17 +39,17 @@ function prompt:choice(opt, obj, nocancel, mute, menucancel)
             end
         end
 
-        camera:set()
-        love.draw(false)
+        love.draw()
         local rx,ry = 0,0
+        if flags.abs then camera:set() end --if using abs coords, set cam
         if type(obj) == "table" then
             rx,ry = obj:draw() --offset for SOUL coords
         elseif type(obj) == "function" then
             rx,ry = obj() --offset for SOUL coords
         end
-        souls.souls.sans:draw(opt[res+1][1]+rx, opt[res+1][2]+ry)
+        souls.souls.sans:draw(opt[res+1][1]+rx, opt[res+1][2]+ry, flags.abs)
         love.graphics.present()
-        camera:unset()
+        if flags.abs then camera:unset() end
 
         if rooms[rooms.current].update then --update room
             rooms[rooms.current]:update(dt)

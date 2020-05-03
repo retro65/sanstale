@@ -67,6 +67,16 @@ function love.update(dt)
         rooms[rooms.current]:update(dt)
     end
     souls:update(dt)
+    if not rooms[rooms.current].noscrollx then --adjust camera x to sans if room hasn't got the flag noscrollx
+        camera:setX(clamp(
+            sans.x-width/2+sans.width/2, 0, rooms[rooms.current].img:getWidth()-width
+        ))
+    end
+    if not rooms[rooms.current].noscrolly then --adjust camera y to sans if room hasn't got the flag noscrolly
+        camera:setY(clamp(
+            sans.y-height/2+sans.height/2, 0, rooms[rooms.current].img:getHeight()-height
+        ))
+    end
 end
 
 function love.draw(cameras)
@@ -77,20 +87,9 @@ function love.draw(cameras)
     if state == "menu" then
         menu:draw()
     elseif state == "overworld" then
-        if not rooms[rooms.current].noscrollx then --adjust camera x to sans if room hasn't got the flag noscrollx
-            camera:setX(clamp(
-                sans.x-width/2+sans.width/2, 0, rooms[rooms.current].img:getWidth()-width
-            ))
-        end
-        if not rooms[rooms.current].noscrolly then --adjust camera y to sans if room hasn't got the flag noscrolly
-            camera:setY(clamp(
-                sans.y-height/2+sans.height/2, 0, rooms[rooms.current].img:getHeight()-height
-            ))
-        end
         rooms[rooms.current]:draw() --draw room
         sans:draw() --draw sans
         rooms[rooms.current]:fgdraw() --draw room foreground
-        rooms:opdraw() --draw room transition opacity thing
         if debug_elems then --semi-transparent room element vision (colored)
             lg.setColor(1,1,1,0.4)
             lg.rectangle("fill",
@@ -121,6 +120,7 @@ function love.draw(cameras)
     if cameras ~= false and state == "overworld" then
         camera:unset()
     end
+    rooms:opdraw() --draw room transition opacity thing
     if debugon then
         lg.draw(debugtext, 0, height-debugtext:getHeight())
         lg.setFont(dialog.fonts.determination)

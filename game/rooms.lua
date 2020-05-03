@@ -52,7 +52,7 @@ end
 function rooms:opdraw() --draw opacity transition thingg
     if self.changing then
         love.graphics.setColor(0,0,0, self.opacity)
-        love.graphics.rectangle("fill", camera:getX(), camera:getY(), width, height)
+        love.graphics.rectangle("fill", 0, 0, width, height)
         love.graphics.setColor(1,1,1,1)
     end
 end

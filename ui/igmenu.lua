@@ -10,10 +10,10 @@ local igm = {
     stat_small = love.graphics.newImage("res/img/stat_small.png")
 }
 
-function igm:draw() --main drawing function
-    local x, y = camera:getX()+30, camera:getY()+30
+function igm:draw() --drawing function (UNSET CAMERA ONLY)
+    local x, y = 30, 30
     if sans.y-camera:getY()+sans.height/2 <= height/2 then
-        y = camera:getY()+height-self.stat_small:getHeight()-30
+        y = height-self.stat_small:getHeight()-30
     end
     --MAIN STATS
     love.graphics.draw(self.stat_small, x, y)
@@ -25,12 +25,12 @@ function igm:draw() --main drawing function
     love.graphics.print(tostring(sans.hp).."/1", x+50, y+66)
     love.graphics.print(tostring(sans.gold), x+50, y+84)
     --MENU SELECT
-    y = camera:getY()+(height-self.stat_menu:getHeight())/2
+    y = (height-self.stat_menu:getHeight())/2
     love.graphics.draw(self.stat_menu, x, y)
     --CURRENT SUBMENU
     if self.submenu ~= 'menu' then
         x = x+self.stat_small:getWidth()+10
-        y = camera:getY()+30
+        y = 30
         love.graphics.draw(self['stat_'..self.submenu], x, y)
     end
     if self.submenu == 'big' then
@@ -54,7 +54,7 @@ function igm:popup()
     self.submenu = 'menu'
 
     while true do
-        local i = prompt:choice(self.menus[self.submenu],self,nil,nil,true)
+        local i = prompt:choice(self.menus[self.submenu],self,{menuC=true})
         if i == nil then
             self.submenu = self.menus[self.submenu].back
         elseif i == false then --quit the entire menu

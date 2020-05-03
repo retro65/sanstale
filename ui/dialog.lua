@@ -100,10 +100,10 @@ function dialog:say(face, facenum, text, font, voice, opt)
     local wrwidth,wrt = font:getWrap(text,
         556-self.faces[face][facenum]:getWidth()-font:getWidth(asterisk))
 
-    local function draw() --drawing function
-        local x,y = camera:getX()+30, camera:getY()+10
+    local function draw() --drawing function (MEANT FOR UNSET CAMERA!)
+        local x,y = 30, 10
         if sans.y-camera:getY()+sans.height/2 <= height/2 then
-            y = camera:getY()+height-self.box:getHeight()-10
+            y = height-self.box:getHeight()-10
         end
         love.graphics.draw(self.box, x, y) --draw dialog box
         if face ~= 'def' then --draw face
@@ -156,11 +156,9 @@ function dialog:say(face, facenum, text, font, voice, opt)
             end
         end
 
-        camera:set()
-        love.draw(false) --draw everyting without updating cameras
+        love.draw() --draw everyting without updating cameras
         draw() --draw shit
         love.graphics.present() --draw outside love.draw
-        camera:unset()
 
         if rooms[rooms.current].update then --update room
             rooms[rooms.current]:update(dt)
@@ -179,7 +177,7 @@ function dialog:say(face, facenum, text, font, voice, opt)
             loop = false
         end
     end
-    return prompt:choice(opt, draw, true, just_say)
+    return prompt:choice(opt, draw, {nocancel=true,mute=just_say})
 end
 
 return dialog
