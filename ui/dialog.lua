@@ -48,32 +48,31 @@ function dialog:load() --loading function
     end
 end
 
-function dialog:say(face, facenum, text, font, voice, opt)
+function dialog:say(face, facenum, text, font, voice)
     face = face or 'def' --def is default
     if face == 'def' then facenum = 1 end 
     local asterisk = "* "
 
     local textp = 1
-    local just_say = not opt
-    if type(opt) == 'number' then
-        local opt2 = {}
-        for i = 1,opt do
-            table.insert(opt2,
-                {math.floor((i/(opt+1))*self.box:getWidth()-souls.w/2),self.choiceH})
-            text = text:gsub("@@([%g ]-)@@",
-                function (s)
-                    opt2[i][3] = s
-                    if i == opt then
-                        return ""
-                    else
-                        return "@@"
-                    end
-                end,
-                1)
-        end
-        opt = opt2
-    elseif just_say then
-        opt = {{-9999,-9999}}
+    local opt = {}
+    while true do
+        local len = #opt
+        text = text:gsub("@@([%g ]-)@@",
+            function (s)
+                table.insert(opt, {0, self.choiceH, txt=s})
+                return "@@"
+            end,
+        1)
+        if len == #opt then break end --if gsub no longer changes anything break
+    end
+    local just_say = #opt == 0
+    if just_say then
+        opt = {{-999,-999}}
+    else
+        text = text:sub(1,-3)
+    end
+    for i = 1, #opt do
+        opt[i][1] = math.floor((i/(#opt+1))*self.box:getWidth()-souls.w/2)
     end
 
     if not font or not voice then
@@ -99,6 +98,7 @@ function dialog:say(face, facenum, text, font, voice, opt)
 
     local wrwidth,wrt = font:getWrap(text,
         556-self.faces[face][facenum]:getWidth()-font:getWidth(asterisk))
+    text = text:gsub('\n','')
 
     local function draw() --drawing function (MEANT FOR UNSET CAMERA!)
         local x,y = 30, 10
@@ -128,7 +128,7 @@ function dialog:say(face, facenum, text, font, voice, opt)
         end
         if not just_say and textp >= #text then --display options
             for i = 1, #opt do
-                love.graphics.print({{1,1,1}, opt[i][3]},
+                love.graphics.print({{1,1,1}, opt[i].txt},
                     x+opt[i][1]+souls.w+2, y+self.choiceH-souls.h/2)
             end
         end
@@ -164,7 +164,7 @@ function dialog:say(face, facenum, text, font, voice, opt)
             rooms[rooms.current]:update(dt)
         end
 
-        if pointer_delay >= 0.05 then
+        if pointer_delay >= 0.04 then
             pointer_delay = 0
             if textp < #text then
                 if not self.silent[text:sub(textp,textp)] then
