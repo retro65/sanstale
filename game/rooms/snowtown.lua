@@ -58,7 +58,14 @@ st:element(181, 181, 365, 20)
 st:element(181, 201, 345, 20)
 st:element(181, 221, 325, 20)
 --snowdin logo
-st:element(612, 205, 356, 56, "(Welcome to Snowdin Town!)")
+st:element(612, 209, 356, 54, "(Welcome to Snowdin Town!)")
+st:element(612, 206, 356, 3, {
+{face = "sans", facenum = 0, text = "are you expecting me to read the sign?"},
+{face = "sans", facenum = 6, text = "looks like i'm behind on somethin'."},
+"(Pretend like the developer actually inserted a rimshot.)",
+{face = "sans", facenum = 0, text = "the sign is large enough to read."},
+{face = "sans", facenum = 2, text = "why do you need me?"}
+})
 --shop & snowed inn
 st:element(1020, 0, 239, 243)
 st:element(1380, 0, 239, 243)
@@ -84,7 +91,7 @@ st:element(0, 361, 5500, 100)
 st:element(178, 320, 336, 20)
 st:element(158, 340, 376, 21)
 --top border
-st:element(0, 0, 5000, 1)
+st:element(0, 0, st.img:getWidth(), 1)
 --left border
 st:element(0, 0, 1, 500)
 --right border

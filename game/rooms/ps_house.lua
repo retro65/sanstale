@@ -54,7 +54,7 @@ pshr:element(32, 356, 50, 50, {"(It's a joke book.)",
 "(Inside the quantum physics book was another joke book.)",
 "(You look inside...)",
 "(There's another quantum physics book...)",
-{text = "I think that's enough.", face = "sans", facenum = 1}})
+{text = "i think that's enough.", face = "sans", facenum = 1}})
 
 --tv
 pshr:element(202, 194, 103, 93, "(The tv doesn't appear to be plugged.)")

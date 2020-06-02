@@ -25,9 +25,9 @@ dialog.faces = { --table that holds all dialog box faces
 }
 
 dialog.voices = { --all voices
-    papyrus = love.audio.newSource("res/aud/voices/papyrus.wav", "static"),
-    sans = love.audio.newSource("res/aud/voices/sans.wav", "static"),
-    default = love.audio.newSource("res/aud/voices/default.wav", "static")
+    papyrus = love.audio.newSource("res/aud/voices/papyrus/1.wav", "static"),
+    sans = love.audio.newSource("res/aud/voices/sans/1.wav", "static"),
+    default = love.audio.newSource("res/aud/voices/default/1.wav", "static")
 }
 
 dialog.fonts = { --all fonts
@@ -84,7 +84,6 @@ function dialog:say(face, facenum, text, font, voice)
         elseif face == "sans" then --same but for sans
             voice = "sans"
             font = self.fonts.sans
-            text = text:lower()
         else --default things
             voice = "default"
             font = self.fonts.determination
