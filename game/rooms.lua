@@ -70,7 +70,7 @@ end
 
 local r_template = { --room template
     elements = {},
-    element = function(self, x,y,w,h,txt,nocollision,exit,oncheck) --element constructor
+    element = function(self, x,y,w,h,txt,nocollision,exit) --element constructor
         table.insert(self.elements, {
             x=x,
             y=y,
@@ -78,8 +78,7 @@ local r_template = { --room template
             height=h,
             text=txt,
             nocollision=nocollision,
-            exit=exit,
-            oncheck=oncheck
+            exit=exit
         })
     end,
     draw = function(self)

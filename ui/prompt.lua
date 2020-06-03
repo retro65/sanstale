@@ -51,9 +51,8 @@ function prompt:choice(opt, obj, flags)
         love.graphics.present()
         if flags.abs then camera:unset() end
 
-        if rooms[rooms.current].update then --update room
-            rooms[rooms.current]:update(dt)
-        end
+        rooms[rooms.current]:update(dt)
+        sans:update(dt) --update Sans animations
         souls:update(dt)
     end
     return res+1 --correct it for return value

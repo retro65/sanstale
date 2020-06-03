@@ -19,7 +19,7 @@ sansr.start_y = sansr.start_y/2-height/2
 local treadmill_msg = {
 "(There is a note attached to the treadmill.)",
 "\"the truth is that you got owned, nerd......\"",
-{face = "sans", facenum = 1, text = "hey, i wrote that note."}}
+{"sans", 1, "hey, i wrote that note."}}
 sansr:element(174, 170, 24, 54, treadmill_msg)
 sansr:element(110, 196, 69, 28, treadmill_msg)
 

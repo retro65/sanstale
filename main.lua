@@ -108,7 +108,7 @@ function love.draw(cameras)
                 else
                     r = 1
                 end
-                if i.text or i.oncheck then
+                if i.text then
                     b = 1
                 end
                 lg.setColor(r,g,b,0.4)

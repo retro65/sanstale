@@ -52,7 +52,7 @@ function dialog:say(face, facenum, text, font, voice)
     face = face or 'def' --def is default
     if face == 'def' then facenum = 1 end 
     local asterisk = "* "
-
+print(face, facenum)
     local textp = 1
     local opt = {}
     while true do
@@ -159,9 +159,8 @@ function dialog:say(face, facenum, text, font, voice)
         draw() --draw shit
         love.graphics.present() --draw outside love.draw
 
-        if rooms[rooms.current].update then --update room
-            rooms[rooms.current]:update(dt)
-        end
+        rooms[rooms.current]:update(dt)
+        sans:update(dt) --update Sans animations
 
         if pointer_delay >= 0.04 then
             pointer_delay = 0

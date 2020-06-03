@@ -25,19 +25,19 @@ st:element(1682, 240, 50, 5, nil, nil,
 st:element(1769, 198, 41, 40, {
 "(Don't want to walk to the other side of town?)",
 "(Try the undersnow tunnels!)\n(They're efficiently laid out.)",
-{face = "sans", facenum = 0, text =
+{"sans", 0,
     "maybe it's best to use this before the shortcut update comes up."}
 }) --the sign
 --papyrus' capture zone (as sans calls it, the garage... doghouse shed...)
 st:element(4987, 0, 200, 255, {
-{face = "sans", facenum = 0, text = "this is our garage."},
-{face = "sans", facenum = 4, text = "doghouse..."},
-{face = "sans", facenum = 0, text = "shed..."},
-{face = "sans", facenum = 3, text = "garage-house."},
-{face = "sans", facenum = 6, text = "doghouse-shed."},
-{face = "sans", facenum = 2, text = "thingy..."},
-{face = "sans", facenum = 2, text = "..."},
-{face = "sans", facenum = 6, text = "-ish."}
+{"sans", 0, "this is our garage."},
+{"sans", 4, "doghouse..."},
+{"sans", 0, "shed..."},
+{"sans", 3, "garage-house."},
+{"sans", 6, "doghouse-shed."},
+{"sans", 2, "thingy..."},
+{"sans", 2, "..."},
+{"sans", 6, "-ish."}
 })
 --mailbox1
 st:element(4406, 217, 22, 54,
@@ -46,7 +46,7 @@ st:element(4406, 217, 22, 54,
 st:element(4446, 217, 22, 53, "(This mailbox is labelled \"PAPYRUS\".)")
 --librarBy
 st:element(3777, 0, 488, 204, {
-{face = "sans", facenum = 0, text = "welp, here's the librarby."}
+{"sans", 0, "welp, here's the librarby."}
 })
 --east forest
 st:element(3544, 0, 1800, 202)
@@ -60,18 +60,20 @@ st:element(181, 221, 325, 20)
 --snowdin logo
 st:element(612, 209, 356, 54, "(Welcome to Snowdin Town!)")
 st:element(612, 206, 356, 3, {
-{face = "sans", facenum = 0, text = "are you expecting me to read the sign?"},
-{face = "sans", facenum = 6, text = "looks like i'm behind on somethin'."},
+{"sans", 0, "are you expecting me to read the sign?"},
+{"sans", 6, "looks like i'm behind on somethin'."},
+function() sans:animset('laugh') end,
 "(Pretend like the developer actually inserted a rimshot.)",
-{face = "sans", facenum = 0, text = "the sign is large enough to read."},
-{face = "sans", facenum = 2, text = "why do you need me?"}
+function() sans:animset('walkdown',1) end,
+{"sans", 0, "the sign is large enough to read."},
+{"sans", 2, "why do you need me?"}
 })
 --shop & snowed inn
 st:element(1020, 0, 239, 243)
 st:element(1380, 0, 239, 243)
 st:element(1259, 0, 121, 222)
 --dimensional box
-st:element(1356, 250, 40, 40, nil,nil,nil,
+st:element(1356, 250, 40, 40,
 function()
     if dialog:say(nil,nil,"Use the box?@@Yes@@No@@",nil,nil) == 1 then
         dialog:say(nil,nil,
@@ -81,7 +83,7 @@ end
 )
 --grillby's
 st:element(2538, 0, 412, 217, {
-{face = "sans", facenum = 0, text = "so are you gonna go in or what?"}
+{"sans", 0, "so are you gonna go in or what?"}
 })
 st:element(2756, 0, 53, 234) --the pot
 --christmas tree

@@ -51,13 +51,16 @@ function sans:draw() --Function for drawing sans
     self.anim[self.anim.current]:draw(self.sheet, self.x+xo, self.y)
 end
 function sans:update(dt) --Function for updating sans
-    if sans.anim.paused then
-        sans.anim[sans.anim.current]:pause()
-        sans.anim[sans.anim.current]:gotoFrame(1)
+    if self.anim.paused then
+        self.anim[self.anim.current]:pause()
+        self.anim[self.anim.current]:gotoFrame(1)
     else
-        sans.anim[sans.anim.current]:resume()
+        self.anim[self.anim.current]:resume()
     end
     self.anim[self.anim.current]:update(dt)
+end
+function sans:animset(name, p) --shortcut 4 animation change
+    self.anim.current, self.anim.paused = name,p==1
 end
 
 function sans:move(dt)
@@ -116,23 +119,25 @@ function sans:check() --check elements (overworld)
     for _,e in pairs(rooms[rooms.current].elements) do --loop through every element in the current room
         if collision(self.x+self.hitbox.x-1, self.y+self.hitbox.y-1, self.hitbox.width+2, self.hitbox.height+2,
                      e.x-1,                  e.y-1,                  e.width+2,           e.height+2) and
-                     (e.oncheck or e.text) then
-            --sans collides with something AND the element has a text or an oncheck value
-           
-            if e.oncheck then
-                e.oncheck() --oncheck is a function obv
-            end
+                     (e.text) then
+            --sans collides with something AND the element has dialogue
+            self.anim.paused = true --pause animation
+            
             if type(e.text) == "table" then
                 --loop through the text if it's a table
                 for _,txt in pairs(e.text) do
                     if type(txt) == 'table' then --if txt is a table then it is used to use dialog boxes with some face
-                        dialog:say(txt.face, txt.facenum, txt.text, txt.font, txt.voice)
+                        dialog:say(txt[#txt-2], txt[2], txt[#txt], txt.font, txt.voice)
+                    elseif type(txt) == "function" then --if it's a function call it as a method of e
+                        txt(e)
                     else --else it's a string just print it without a face
                         dialog:say(nil,nil,txt)
                     end
                 end
             elseif type(e.text) == "string" then --if it's a string then print it without a face
                 dialog:say(nil, nil, e.text)
+            elseif type(e.text) == "function" then --if it's a function call it as a method of e
+                e:text()
             end
             break --this avoids checking multiple objects at once
         end

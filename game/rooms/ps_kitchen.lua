@@ -12,11 +12,11 @@ psk.start_y = psk.img:getHeight()/2-height/2
 
 --oven
 psk:element(337, 191, 41, 58, {"(It's an oven.)",
-{face="sans", facenum=1, text="papyrus always cooks his spaghetti here."}})
+{"sans", 1, "papyrus always cooks his spaghetti here."}})
 
 --table
 psk:element(340, 107, 38, 84, {"(It's a table.)",
-{face="sans", facenum=1, text="papyrus always eats his spaghetti here."}})
+{"sans", 1, "papyrus always eats his spaghetti here."}})
 
 --closet
 psk:element(384, 7, 66, 130, "(It's a closet.)\n(It's filled with bones.)")
