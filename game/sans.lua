@@ -126,16 +126,14 @@ function sans:check() --check elements (overworld)
             if type(e.text) == "table" then
                 --loop through the text if it's a table
                 for _,txt in pairs(e.text) do
-                    if type(txt) == 'table' then --if txt is a table then it is used to use dialog boxes with some face
-                        dialog:say(txt[#txt-2], txt[2], txt[#txt], txt.font, txt.voice)
-                    elseif type(txt) == "function" then --if it's a function call it as a method of e
+                    if type(txt) == "function" then --if it's a function call it as a method of e
                         txt(e)
-                    else --else it's a string just print it without a face
-                        dialog:say(nil,nil,txt)
+                    else --else it's a dialogue line display it as is
+                        dialog:say(txt)
                     end
                 end
             elseif type(e.text) == "string" then --if it's a string then print it without a face
-                dialog:say(nil, nil, e.text)
+                dialog:say(e.text)
             elseif type(e.text) == "function" then --if it's a function call it as a method of e
                 e:text()
             end

@@ -31,16 +31,15 @@ pshr:element(460, 98, 60, 13,function() rooms:change("sans",90,330) end,true)
 --couch
 pshr:element(172, 348, 160, 74,
 function()
-    if not events.couch then
-        dialog:say(nil,nil,"(You touch the couch.)")
-        dialog:say(nil,nil,"(It makes a jangling sound.)")
-        dialog:say(nil,nil,
-            "(You find a bunch of loose coins inside the couch...)")
+    if not events.ps_house_couch then
+        dialog:say("(You touch the couch.)")
+        dialog:say("(It makes a jangling sound.)")
+        dialog:say("(You find a bunch of loose coins inside the couch...)")
         sans.gold=sans.gold+20
-        events.couch=true
-        dialog:say(nil,nil,"(You got 20G.)")
+        events.ps_house_couch=true
+        dialog:say("(You got 20G.)")
     else
-        dialog:say(nil,nil,"(It's a saggy old couch.)")
+        dialog:say("(It's a saggy old couch.)")
     end
 end)
 

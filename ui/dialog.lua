@@ -1,4 +1,5 @@
 local dialog = {
+    delay = 0.04,
     choiceH = 100,
     silent = {
         [" "] = true,
@@ -17,6 +18,10 @@ local dialog = {
     },
     active = false
 } --namespace
+
+dialog.sfx = { --sound effects (for dialogue) (stream because used rarely)
+    rimshot = love.audio.newSource("res/aud/sfx/mus_rimshot.ogg", "stream")
+}
 
 dialog.faces = { --table that holds all dialog box faces
     papyrus = {},
@@ -49,10 +54,17 @@ function dialog:load() --loading function
 end
 
 function dialog:say(face, facenum, text, font, voice)
+    if not text then --expect face to contain dialogue
+        if type(face) == 'table' then
+            face, facenum, text, font, voice = face[#face-2], face[2], face[#face], face.font, face.voice
+        else --else it's a string (set face to nil)
+            text, face = face, nil
+        end
+    end
     face = face or 'def' --def is default
     if face == 'def' then facenum = 1 end 
     local asterisk = "* "
-print(face, facenum)
+
     local textp = 1
     local opt = {}
     while true do
@@ -73,6 +85,10 @@ print(face, facenum)
     end
     for i = 1, #opt do
         opt[i][1] = math.floor((i/(#opt+1))*self.box:getWidth()-souls.w/2)
+    end
+
+    if text == '' then --remove the asterisk for empty text
+        asterisk = ''
     end
 
     if not font or not voice then
@@ -162,8 +178,8 @@ print(face, facenum)
         rooms[rooms.current]:update(dt)
         sans:update(dt) --update Sans animations
 
-        if pointer_delay >= 0.04 then
-            pointer_delay = 0
+        if pointer_delay >= self.delay then
+            pointer_delay = pointer_delay - self.delay
             if textp < #text then
                 if not self.silent[text:sub(textp,textp)] then
                     self.voices[voice]:play() --voice sounds

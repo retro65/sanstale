@@ -22,12 +22,17 @@ st:element(4889, 266, 50, 5, nil, nil,
 st:element(1657, 190, 100, 50)
 st:element(1682, 240, 50, 5, nil, nil,
 {new = "snowtown", newx = 4891, newy = 220})
-st:element(1769, 198, 41, 40, {
+--the sign next to tunnel
+st:element(1769, 198, 41, 10, {
+{"sans", 6, "you can also try reading the welcome sign from behind."},
+function() events.snowtown_sign_bait = true end
+})
+st:element(1769, 208, 41, 30, {
 "(Don't want to walk to the other side of town?)",
 "(Try the undersnow tunnels!)\n(They're efficiently laid out.)",
 {"sans", 0,
     "maybe it's best to use this before the shortcut update comes up."}
-}) --the sign
+})
 --papyrus' capture zone (as sans calls it, the garage... doghouse shed...)
 st:element(4987, 0, 200, 255, {
 {"sans", 0, "this is our garage."},
@@ -60,11 +65,20 @@ st:element(181, 221, 325, 20)
 --snowdin logo
 st:element(612, 209, 356, 54, "(Welcome to Snowdin Town!)")
 st:element(612, 206, 356, 3, {
-{"sans", 0, "are you expecting me to read the sign?"},
-{"sans", 6, "looks like i'm behind on somethin'."},
-function() sans:animset('laugh') end,
-"(Pretend like the developer actually inserted a rimshot.)",
-function() sans:animset('walkdown',1) end,
+function()
+    if events.snowtown_sign_bait then
+        dialog:say({"sans", 2, "we've been through this."})
+        dialog:say({"sans", 0, "but you came here for pun, right?"})
+    else
+        dialog:say({"sans", 0, "are you expecting me to read the sign?"})
+        dialog:say({"sans", 6, "looks like i'm behind on somethin'."})
+    end
+end,
+function()
+    sans:animset('laugh')
+    dialog.sfx.rimshot:play()
+    sans:animset('walkdown',1)
+end,
 {"sans", 0, "the sign is large enough to read."},
 {"sans", 2, "why do you need me?"}
 })
@@ -75,9 +89,8 @@ st:element(1259, 0, 121, 222)
 --dimensional box
 st:element(1356, 250, 40, 40,
 function()
-    if dialog:say(nil,nil,"Use the box?@@Yes@@No@@",nil,nil) == 1 then
-        dialog:say(nil,nil,
-            "Stay determined for an upcoming inventory update.")
+    if dialog:say("Use the box?@@Yes@@No@@") == 1 then
+        dialog:say("Stay determined for an upcoming inventory update.")
     end
 end
 )
