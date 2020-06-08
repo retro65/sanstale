@@ -77,6 +77,7 @@ end,
 function()
     sans:animset('laugh')
     dialog.sfx.rimshot:play()
+    wait(2)
     sans:animset('walkdown',1)
 end,
 {"sans", 0, "the sign is large enough to read."},

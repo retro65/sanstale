@@ -149,37 +149,13 @@ function dialog:say(face, facenum, text, font, voice)
         end
         return x,y
     end
-    
-    sans.canmove = 0 --avoid sans `teleporting` when exiting this function because dt will increase like mad
 
-    local pointer_delay = 0
-    local dt
-    local loop = true
+    local txt_t = 0
 
-    while loop do
-        dt = love.timer.getDelta()
-        pointer_delay = pointer_delay+dt
-
-        love.event.pump()
-        for ev, a, b, c in love.event.poll() do --poll events
-            if ev == "quit" then
-                love.event.quit()
-	    elseif ev == "keypressed" then
-                if CANCEL[a] then --skip text
-                    textp = #text
-                end
-            end
-        end
-
-        love.draw() --draw everyting without updating cameras
-        draw() --draw shit
-        love.graphics.present() --draw outside love.draw
-
-        rooms[rooms.current]:update(dt)
-        sans:update(dt) --update Sans animations
-
-        if pointer_delay >= self.delay then
-            pointer_delay = pointer_delay - self.delay
+    function cond(dt, t)
+        txt_t = txt_t + dt
+        if txt_t >= self.delay then
+            txt_t = txt_t - self.delay
             if textp < #text then
                 if not self.silent[text:sub(textp,textp)] then
                     self.voices[voice]:play() --voice sounds
@@ -188,9 +164,20 @@ function dialog:say(face, facenum, text, font, voice)
             end
         end
         if textp >= #text then
-            loop = false
+            return true
         end
     end
+
+    function evh(ev,a,b,c)
+        if ev == "keypressed" then
+            if CANCEL[a] then --skip text
+                textp = #text
+            end
+        end
+    end
+
+    wait(cond, evh, draw)
+
     return prompt:choice(opt, draw, {nocancel=true,mute=just_say})
 end
 

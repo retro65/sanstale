@@ -26,6 +26,41 @@ function clamp(v, min, max) --simple function to clamp a value between a minimum
     return math.min(math.max(v, min), max)
 end
 
+function wait(cond, evh, drawf) --function for waiting while updating the animations and etc.
+    sans.canmove = 0
+    local t = 0
+    while true do
+        local dt = love.timer.getDelta()
+        t = t + dt
+
+        love.event.pump()
+        for ev, a, b, c in love.event.poll() do --poll events
+            if ev == "quit" then
+                love.event.quit()
+            elseif ev == "keypressed" then
+                love.keypressed(a)
+            elseif ev == "keyreleased" then
+                love.keyreleased(a)
+            end
+            if evh then
+                evh(ev,a,b,c)
+            end
+        end
+
+        love.draw() --draw everything without updating cameras
+        if drawf then drawf() end --draw shit
+        love.graphics.present() --draw outside love.draw
+
+        rooms[rooms.current]:update(dt)
+        sans:update(dt) --update Sans animations
+
+        if     type(cond) == 'number' and t >= cond then break
+        elseif type(cond) == 'function' and cond(dt, t) then break
+        end
+    end
+    return t
+end
+
 function love.load(arg)
     CONFIRM = {z=true, ["return"] = true} --constants
     CANCEL = {x=true,rshift=true}
@@ -142,12 +177,12 @@ function love.keypressed(k)
         end
     
     elseif MENU[k] then
-        if state == "overworld" then
+        if state == "overworld" and sans.canmove >= 2 then
             igmenu:popup() --activate in-game menu when c/ctrl is pressed
         end
     
     elseif CONFIRM[k] then
-        if state == "overworld" then
+        if state == "overworld" and sans.canmove >= 2 then
             sans:check() --check when z is pressed
         elseif state == "menu" then
             if not menu.resetti then --normal
@@ -203,7 +238,7 @@ function love.keypressed(k)
     end
 end
 function love.keyreleased(k)
-    if k == "up" or k == "down" or k == "left" or k == "right" then --pause animation
+    if sans.canmove >= 2 and (k == "up" or k == "down" or k == "left" or k == "right") then --pause animation
         sans.anim.paused = true
 
     elseif k == "lshift" and debugon then
