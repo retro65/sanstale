@@ -1,8 +1,12 @@
 # SansTale
 
 An Undertale Fangame written in Love2D.
+I am aware of the existence of another Sanstale fangame ([play it here](https://sanstale.netlify.app/)), 
+but it contains only the final Genocide boss fight. 
+This project, however, will contain not only Genocide, 
+and not only the battle screen.
 
-Love2D can be downloaded for free at <https://love2d.org>.
+Love2D can be downloaded for free at the [official website](https://love2d.org).
 
 The game requires at least version 11.3 of Love2D to run properly.
 
@@ -15,7 +19,7 @@ because of the following plans (mark them as done when time comes):
 he will comment on stuff when you check them,
 and maybe break the 4th wall occasionally
 + The story is experienced very differently from canon Undertale
-STATUS: there is no story yet, and **I'll be glad if anyone contributes ideas**
+STATUS: the story is in early development, and **I'll be glad if anyone contributes ideas**
 + Game mechanics, such as teleporting, attack mechanics
 
 (Feel free to fork this and/or contribute)
@@ -49,14 +53,14 @@ love .
 
 Download the Love2D .zip file from the official website, and unzip it.
 Next you should drag the game directory (the whole thing not the contents!)
-into `love.exe` (not `lovec.exe`!). That should open the game window.
+into `love.exe` (not `lovec.exe`!).
 
 ### How to know it works
 
 After doing the steps for your OS the game window should open.
 
 The title of the window should be "sanstale" (lowercase), if it is something
-like "LÖve 11.*?* (*love version name*)", that means that the engine started
+like "LÖVE 11.*?* (*love version name*)", that means that the engine started
 without the game supplied to it.
 
 Open an issue with *"help wanted"* label if something did not work.
