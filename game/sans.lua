@@ -72,24 +72,26 @@ function sans:move(dt)
     end
 
     self.anim.paused = false
-    local newy, newx --create placeholder values
+    local newx,newy --create placeholder values
     --move
-    if love.keyboard.isDown("down") then
-        self.anim.current = "walkdown"
-        newy = self.y+self.speed*dt
-    elseif love.keyboard.isDown("left") then 
+    if love.keyboard.isDown("left") then 
         self.anim.current = "walkleft"
         newx = self.x-self.speed*dt
     elseif love.keyboard.isDown("right") then
         self.anim.current = "walkright"
         newx = self.x+self.speed*dt
+    end
+    if love.keyboard.isDown("down") then
+        self.anim.current = "walkdown"
+        newy = self.y+self.speed*dt
     elseif love.keyboard.isDown("up") then
         self.anim.current = "walkup"
         newy = self.y-self.speed*dt
-    else
+    end
+    if not (newx or newy) then
         self.anim.paused = true
     end
-    --if nil then revert to old value
+    --use position if nil
     newx = newx or self.x
     newy = newy or self.y
 
@@ -102,12 +104,18 @@ function sans:move(dt)
                 rooms:change(e.exit.new, e.exit.newx, e.exit.newy)
                 return
             end
+            if self.speed == self.def_speed then
+                newx,newy = uncollide(e.x,                e.y,                e.width,           e.height,
+                                      newx+self.hitbox.x, newy+self.hitbox.y, self.hitbox.width, self.hitbox.height)
+                newx = newx - self.hitbox.x
+                newy = newy - self.hitbox.y
+            end
             collision_count = collision_count+1 --add to collision count
         end
     end
 
-    if collision_count == 0 or self.speed ~= self.def_speed then
-        --if sans hasn't collided with anything and super speed mode is not on, then change coordinates to new ones
+    if newx ~= self.x or newy ~= self.y then
+        --if Sans has a net movement, then change coordinates to new ones
         self.x = newx
         self.y = newy
     else

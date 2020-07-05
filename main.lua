@@ -22,6 +22,24 @@ function collision(x1,y1,w1,h1, x2,y2,w2,h2) --simple function to detect collisi
     y2 < y1+h1
 end
 
+--receives two rectangles that must intersect, returns x,y offsets for 2nd rect to move it outside of 1st SHORTEST WAY POSSIBLE
+function uncollide(x1,y1,w1,h1, x2,y2,w2,h2) --simple function to un-intersect two rectangles
+    local x,y = x1 + w1 - x2, y1 + h1 - y2
+    local tmp = x2 + w2 - x1 --tmp for comparison
+    if tmp < x then --tmp is a shorter way
+        x = -tmp
+    end
+    tmp = y2 + h2 - y1
+    if tmp < y then
+        y = -tmp
+    end
+    if math.abs(x) < math.abs(y) then --horizontal offset
+        return x2+x,y2
+    else
+        return x2,y2+y
+    end
+end
+
 function clamp(v, min, max) --simple function to clamp a value between a minimum and maximum
     return math.min(math.max(v, min), max)
 end
