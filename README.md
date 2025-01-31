@@ -1,4 +1,4 @@
-# I've stopped working on it for now, but *may* get back some time
+# CRINGE, ABANDONED
 # SansTale
 
 An Undertale Fangame written in Love2D.
